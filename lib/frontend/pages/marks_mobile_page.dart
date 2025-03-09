@@ -4,7 +4,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:transcript_of_records/backend/riverpod/provider.dart';
 import 'package:transcript_of_records/frontend/widgets/module_table/module_table.dart';
-import 'package:transcript_of_records/frontend/widgets/module_table/module_table_cell.dart';
 
 class MarksMobilPage extends ConsumerStatefulWidget {
   const MarksMobilPage({super.key});

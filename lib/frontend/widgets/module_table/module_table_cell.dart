@@ -24,7 +24,7 @@ class ModuleTableCell extends ConsumerWidget {
     final appTheme = ref.watch(appThemeProvider);
 
     return Row(
-      mainAxisAlignment: MainAxisAlignment.center,
+      mainAxisAlignment: MainAxisAlignment.spaceAround,
       children: [
         Container(
           height: ScreenSize.height * 0.07,
