@@ -2,7 +2,7 @@
 
 import 'package:flutter/material.dart';
 
-import '../../../backend/design/screen_size.dart';
+import '../../../../backend/design/screen_size.dart';
 
 // Text with a stroke style
 class StrokeText extends StatelessWidget {

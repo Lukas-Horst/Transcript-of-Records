@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:transcript_of_records/backend/design/screen_size.dart';
 import 'package:transcript_of_records/backend/helper/string_functions.dart';
 import 'package:transcript_of_records/frontend/widgets/bottom_sheets/custom_bottom_sheet.dart';
-import 'package:transcript_of_records/frontend/widgets/text/changeable_text.dart';
-import 'package:transcript_of_records/frontend/widgets/text/standard_text.dart';
-import 'package:transcript_of_records/frontend/widgets/useful_widgets/text_form_field.dart';
+import 'package:transcript_of_records/frontend/widgets/components/text/changeable_text.dart';
+import 'package:transcript_of_records/frontend/widgets/components/text/standard_text.dart';
+import 'package:transcript_of_records/frontend/widgets/components/useful_widgets/text_form_field.dart';
 
 CustomBottomSheet addModuleBottomSheet(BuildContext context, double totalCP,
     double totalGrade, void Function(List<String>, bool) addTableCell,

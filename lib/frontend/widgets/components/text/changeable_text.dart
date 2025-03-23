@@ -1,7 +1,7 @@
 // author: Lukas Horst
 
 import 'package:flutter/material.dart';
-import 'package:transcript_of_records/frontend/widgets/text/standard_text.dart';
+import 'package:transcript_of_records/frontend/widgets/components/text/standard_text.dart';
 
 // Text which can be changed via a key
 class ChangeableText extends StatefulWidget {

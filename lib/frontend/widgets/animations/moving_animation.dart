@@ -1,9 +1,9 @@
 // author: Lukas Horst
 
 import 'package:flutter/material.dart';
-import 'package:transcript_of_records/frontend/animations/animation_controllers.dart';
-import 'package:transcript_of_records/frontend/animations/rotation_animation.dart';
-import 'package:transcript_of_records/frontend/animations/size_animation.dart';
+import 'package:transcript_of_records/frontend/widgets/animations/animation_controllers.dart';
+import 'package:transcript_of_records/frontend/widgets/animations/rotation_animation.dart';
+import 'package:transcript_of_records/frontend/widgets/animations/size_animation.dart';
 
 // Animation to move a widget and optionally rotate it also
 class MovingAnimation extends StatefulWidget {

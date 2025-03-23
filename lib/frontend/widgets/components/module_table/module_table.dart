@@ -6,8 +6,8 @@ import 'package:transcript_of_records/backend/design/screen_size.dart';
 import 'package:transcript_of_records/backend/helper/math_functions.dart';
 import 'package:transcript_of_records/backend/helper/string_functions.dart';
 import 'package:transcript_of_records/frontend/widgets/bottom_sheets/add_module_bottom_sheet.dart';
-import 'package:transcript_of_records/frontend/widgets/buttons/custom_icon_button.dart';
-import 'package:transcript_of_records/frontend/widgets/module_table/drag_drop_list.dart';
+import 'package:transcript_of_records/frontend/widgets/components/buttons/custom_icon_button.dart';
+import 'package:transcript_of_records/frontend/widgets/components/module_table/drag_drop_list.dart';
 
 import 'module_table_cell.dart';
 
@@ -183,7 +183,7 @@ class _ModuleTableState extends ConsumerState<ModuleTable> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                'Gesamt-CP: ${_totalCP.toString().replaceAll('.', ',')}',
+                'Gesamt-CP: ${_totalCP.toString().replaceAll('.', ',').replaceAll(',0', '')}',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: ScreenSize.height * 0.03,
@@ -191,7 +191,7 @@ class _ModuleTableState extends ConsumerState<ModuleTable> {
                 ),
               ),
               Text(
-                'Gesamtnote: ${_totalGrade.toString().replaceAll('.', ',')}',
+                'Gesamtnote: ${_totalGrade.toString().replaceAll('.', ',').replaceAll(',0', '')}',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: ScreenSize.height * 0.03,

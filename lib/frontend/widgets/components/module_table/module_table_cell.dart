@@ -2,10 +2,9 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-import 'package:transcript_of_records/frontend/widgets/buttons/custom_icon_button.dart';
-
-import '../../../backend/design/screen_size.dart';
-import '../../../backend/riverpod/provider.dart';
+import 'package:transcript_of_records/backend/design/screen_size.dart';
+import 'package:transcript_of_records/backend/riverpod/provider.dart';
+import 'package:transcript_of_records/frontend/widgets/components/buttons/custom_icon_button.dart';
 
 // Widget to display one module entry
 class ModuleTableCell extends ConsumerWidget {

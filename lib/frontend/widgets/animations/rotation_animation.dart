@@ -1,7 +1,7 @@
 // author: Lukas Horst
 
 import 'package:flutter/material.dart';
-import 'package:transcript_of_records/frontend/widgets/transformed_widgets/angle_widget.dart';
+import 'package:transcript_of_records/frontend/widgets/components/transformed_widgets/angle_widget.dart';
 
 import 'animation_controllers.dart';
 

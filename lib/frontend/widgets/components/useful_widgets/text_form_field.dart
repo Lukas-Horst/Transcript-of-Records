@@ -4,8 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:transcript_of_records/backend/design/screen_size.dart';
 import 'package:transcript_of_records/backend/riverpod/provider.dart';
-import 'package:transcript_of_records/frontend/animations/moving_animation.dart';
-import 'package:transcript_of_records/frontend/widgets/text/stroke_text.dart';
+import 'package:transcript_of_records/frontend/widgets/animations/moving_animation.dart';
+import 'package:transcript_of_records/frontend/widgets/components/text/stroke_text.dart';
 
 
 class CustomTextFormField extends ConsumerStatefulWidget {
@@ -69,8 +69,8 @@ class CustomTextFormFieldState extends ConsumerState<CustomTextFormField> {
           _passwordVisible
               ? Icons.visibility
               : Icons.visibility_off,
-          size: ScreenSize.height * 0.025 +
-              ScreenSize.width * 0.025,
+          size: ScreenSize.height * 0.04,
+          color: Colors.white,
         ),
       );
     }

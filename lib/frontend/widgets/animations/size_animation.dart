@@ -1,7 +1,7 @@
 // author: Lukas Horst
 
 import 'package:flutter/material.dart';
-import 'package:transcript_of_records/frontend/animations/animation_controllers.dart';
+import 'package:transcript_of_records/frontend/widgets/animations/animation_controllers.dart';
 
 class SizeAnimation extends StatefulWidget {
 
