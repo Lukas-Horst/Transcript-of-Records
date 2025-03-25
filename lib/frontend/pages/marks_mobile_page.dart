@@ -2,6 +2,7 @@
 
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:transcript_of_records/backend/database/user_collection_functions.dart';
 import 'package:transcript_of_records/backend/design/screen_size.dart';
 import 'package:transcript_of_records/backend/riverpod/provider.dart';
 import 'package:transcript_of_records/frontend/widgets/components/module_table/module_table.dart';
@@ -30,6 +31,15 @@ class MarksMobile extends ConsumerWidget {
           title: const StandardText(text: 'Notenspiegel', color: Colors.black),
           backgroundColor: appTheme.secondaryColor,
           actions: [
+            IconButton(
+              icon: Icon(
+                Icons.person,
+                size: ScreenSize.height * 0.04,
+              ),
+              onPressed: () async {
+                await deleteUser(ref, context);
+              },
+            ),
             IconButton(
               icon: Icon(
                 Icons.logout,

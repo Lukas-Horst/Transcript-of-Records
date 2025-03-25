@@ -1,18 +1,22 @@
 // author: Lukas Horst
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 
-class DragDropList extends StatefulWidget {
+class DragDropList extends ConsumerStatefulWidget {
 
   final List<Widget> moduleEntryList;
+  final List<List<String>> moduleList;
+  final void Function(WidgetRef ref) updateDatabaseEntries;
 
-  const DragDropList({super.key, required this.moduleEntryList});
+  const DragDropList({super.key, required this.moduleEntryList,
+    required this.moduleList, required this.updateDatabaseEntries});
 
   @override
-  State<DragDropList> createState() => _DragDropListState();
+  ConsumerState<DragDropList> createState() => _DragDropListState();
 }
 
-class _DragDropListState extends State<DragDropList> {
+class _DragDropListState extends ConsumerState<DragDropList> {
 
   @override
   Widget build(BuildContext context) {
@@ -23,8 +27,11 @@ class _DragDropListState extends State<DragDropList> {
             if (newIndex > oldIndex) {
               newIndex--;
             }
-            final item = widget.moduleEntryList.removeAt(oldIndex);
-            widget.moduleEntryList.insert(newIndex, item);
+            final moduleEntryItem = widget.moduleEntryList.removeAt(oldIndex);
+            widget.moduleEntryList.insert(newIndex, moduleEntryItem);
+            final moduleListItem = widget.moduleList.removeAt(oldIndex);
+            widget.moduleList.insert(newIndex, moduleListItem);
+            widget.updateDatabaseEntries(ref);
           });
         });
   }

@@ -1,6 +1,7 @@
 // author: Lukas Horst
 
 import 'package:flutter/material.dart';
+import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:transcript_of_records/backend/design/screen_size.dart';
 import 'package:transcript_of_records/backend/helper/string_functions.dart';
 import 'package:transcript_of_records/frontend/widgets/bottom_sheets/custom_bottom_sheet.dart';
@@ -9,8 +10,8 @@ import 'package:transcript_of_records/frontend/widgets/components/text/standard_
 import 'package:transcript_of_records/frontend/widgets/components/useful_widgets/text_form_field.dart';
 
 CustomBottomSheet addModuleBottomSheet(BuildContext context, double totalCP,
-    double totalGrade, void Function(List<String>, bool) addTableCell,
-    double Function({List<double>? additionalGrade}) countGrade) {
+    double totalGrade, void Function(List<String>, bool, WidgetRef ref) addTableCell,
+    double Function({List<double>? additionalGrade}) countGrade, WidgetRef ref) {
 
   // Module text field
   final moduleTextController = TextEditingController();
@@ -182,7 +183,7 @@ CustomBottomSheet addModuleBottomSheet(BuildContext context, double totalCP,
                 gradeText = '-';
               }
               List<String> moduleEntry = [moduleText, '$cp'.replaceAll('.', ',').replaceAll(',0', ''), gradeText];
-              addTableCell(moduleEntry, true);
+              addTableCell(moduleEntry, true, ref);
             }
             Navigator.of(context).pop();
           },

@@ -1,10 +1,14 @@
 // author: Lukas Horst
 
+import 'package:appwrite/models.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
+import 'package:transcript_of_records/backend/constants/appwrite_constants.dart';
 import 'package:transcript_of_records/backend/design/screen_size.dart';
+import 'package:transcript_of_records/backend/helper/convert_appwrite_data.dart';
 import 'package:transcript_of_records/backend/helper/math_functions.dart';
 import 'package:transcript_of_records/backend/helper/string_functions.dart';
+import 'package:transcript_of_records/backend/riverpod/provider.dart';
 import 'package:transcript_of_records/frontend/widgets/bottom_sheets/add_module_bottom_sheet.dart';
 import 'package:transcript_of_records/frontend/widgets/components/buttons/custom_icon_button.dart';
 import 'package:transcript_of_records/frontend/widgets/components/module_table/drag_drop_list.dart';
@@ -21,9 +25,10 @@ class ModuleTable extends ConsumerStatefulWidget {
 class _ModuleTableState extends ConsumerState<ModuleTable> {
 
   final List<Widget> moduleEntryList = [];
-  final List<List<String>> moduleList = [['EPR', '6', '2,3']];
-  late double _totalCP;
-  late double _totalGrade;
+  final List<List<String>> moduleList = [];
+  double _totalCP = 0;
+  double _totalGrade = 0;
+  bool initialization = false;
 
   // Counting all credit points
   double countCP() {
@@ -61,16 +66,17 @@ class _ModuleTableState extends ConsumerState<ModuleTable> {
     return round(totalGrade, digits: 2);
   }
 
-  void addTableCell(List<String> moduleEntry, bool updateState) {
+  void addTableCell(List<String> moduleEntry, bool updateState, WidgetRef ref) {
     final key = UniqueKey();
     moduleEntryList.add(ModuleTableCell(
       key: key,
       moduleName: moduleEntry[0],
-      credits: moduleEntry[1],
-      grade: moduleEntry[2],
+      credits: moduleEntry[1].replaceAll('.', ',').replaceAll(RegExp(r',0$'), ''),
+      grade: moduleEntry[2].replaceAll('.', ',').replaceAll(RegExp(r',0$'), ''),
       onTap: () {
         setState(() {
           moduleList.remove(moduleEntry);
+          updateDatabaseEntries(ref);
           moduleEntryList.removeWhere((widget) => widget.key == key);
           _totalCP = countCP();
           _totalGrade = countGrade();
@@ -81,24 +87,71 @@ class _ModuleTableState extends ConsumerState<ModuleTable> {
     if (updateState) {
       setState(() {
         moduleList.add(moduleEntry);
+        updateDatabaseEntries(ref);
         _totalCP = countCP();
         _totalGrade = countGrade();
       });
     }
   }
 
+  // Updates the database entries of the user
+  Future<void> updateDatabaseEntries(WidgetRef ref) async {
+    List<String> modules = [];
+    List<double> cps = [];
+    List<double> grades = [];
+    for (List<String> moduleEntry in moduleList) {
+      modules.add(moduleEntry[0]);
+      cps.add(stringToDouble(moduleEntry[1])!);
+      if (moduleEntry[2] == '-') {
+        grades.add(0.0);
+      } else {
+        grades.add(stringToDouble(moduleEntry[2])!);
+      }
+    }
+    final databaseApi = ref.read(databaseApiProvider);
+    final userState = ref.read(userStateProvider);
+    Map<String, dynamic> data = {
+      'module': modules,
+      'cp': cps,
+      'grade': grades,
+    };
+    await databaseApi.updateDocument(userCollectionId, userState.user!.$id, data);
+  }
+
   @override
   void initState() {
-    _totalCP = countCP();
-    _totalGrade = countGrade();
-    for (List<String> moduleEntry in moduleList) {
-      addTableCell(moduleEntry, false);
-    }
     super.initState();
+  }
+
+  // Method to get the data from the appwrite database
+  void init(WidgetRef ref) async {
+    if (!initialization) {
+      final databaseApi = ref.read(databaseApiProvider);
+      final userState = ref.read(userStateProvider);
+      initialization = true;
+      Document? userDocument = await databaseApi.getDocumentById(userCollectionId, userState.user!.$id);
+      if (userDocument != null) {
+        List<String> modules = convertDynamicToStringList(userDocument.data['module']);
+        List<double> cps = convertDynamicToDoubleList(userDocument.data['cp']);
+        List<double> grades = convertDynamicToDoubleList(userDocument.data['grade']);
+        for (int i=0; i < modules.length; i++) {
+          List<String> moduleListElement = [modules[i], '${cps[i]}', '${grades[i]}'];
+          moduleList.add(moduleListElement);
+        }
+        for (List<String> moduleEntry in moduleList) {
+          addTableCell(moduleEntry, false, ref);
+          setState(() {
+            _totalCP = countCP();
+            _totalGrade = countGrade();
+          });
+        }
+      }
+    }
   }
 
   @override
   Widget build(BuildContext context) {
+    init(ref);
     return Column(
       children: [
         SizedBox(
@@ -149,7 +202,8 @@ class _ModuleTableState extends ConsumerState<ModuleTable> {
         ),
         SizedBox(
           height: ScreenSize.height * 0.65,
-          child: DragDropList(moduleEntryList: moduleEntryList),
+          child: DragDropList(moduleEntryList: moduleEntryList, moduleList: moduleList,
+            updateDatabaseEntries: updateDatabaseEntries,),
         ),
         SizedBox(height: ScreenSize.height * 0.02,),
         SizedBox(
@@ -165,7 +219,7 @@ class _ModuleTableState extends ConsumerState<ModuleTable> {
                 ),
                 onTap: () {
                   addModuleBottomSheet(context, _totalCP, _totalGrade,
-                      addTableCell, countGrade).openBottomSheet(context);
+                      addTableCell, countGrade, ref).openBottomSheet(context);
                 },
               )
             ],
@@ -183,7 +237,7 @@ class _ModuleTableState extends ConsumerState<ModuleTable> {
             mainAxisAlignment: MainAxisAlignment.spaceAround,
             children: [
               Text(
-                'Gesamt-CP: ${_totalCP.toString().replaceAll('.', ',').replaceAll(',0', '')}',
+                'Gesamt-CP: ${_totalCP.toString().replaceAll('.', ',').replaceAll(RegExp(r',0$'), '')}',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: ScreenSize.height * 0.03,
@@ -191,7 +245,7 @@ class _ModuleTableState extends ConsumerState<ModuleTable> {
                 ),
               ),
               Text(
-                'Gesamtnote: ${_totalGrade.toString().replaceAll('.', ',').replaceAll(',0', '')}',
+                'Gesamtnote: ${_totalGrade.toString().replaceAll('.', ',').replaceAll(RegExp(r',0$'), '')}',
                 style: TextStyle(
                   color: Colors.black,
                   fontSize: ScreenSize.height * 0.03,

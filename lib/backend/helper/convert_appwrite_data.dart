@@ -24,14 +24,28 @@ List<int> convertDynamicToIntList(List<dynamic> dynamicList) {
   return intList;
 }
 
-// Function to convert a dynamic list from appwrite into a bool list if possible
-List<bool> convertDynamicToBoolList(List<dynamic> dynamicList) {
-  List<bool> boolList = [];
+// Function to convert a dynamic list from appwrite into a double list if possible
+List<double> convertDynamicToDoubleList(List<dynamic> dynamicList) {
+  List<double> doubleList = [];
   for (dynamic dynamicValue in dynamicList) {
     try {
-      bool boolValue = dynamicValue as bool;
-      boolList.add(boolValue);
+      double doubleValue = _convertDynamicToDouble(dynamicValue)!;
+      doubleList.add(doubleValue);
     } catch(e) {}
   }
-  return boolList;
+  return doubleList;
+}
+
+// Converts a dynamic value (if double or int) to a double
+double? _convertDynamicToDouble(dynamic dynamicValue) {
+  double? doubleValue;
+  try {
+    doubleValue = dynamicValue as double;
+  } catch(e) {
+    if (e.toString().contains('type \'int\'')) {
+      int intValue = dynamicValue as int;
+      doubleValue = intValue + 0;
+    }
+  }
+  return doubleValue;
 }

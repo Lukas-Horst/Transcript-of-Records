@@ -9,3 +9,6 @@ final String appwriteUrl = dotenv.env['APPWRITE_URL']!;
 final String appwriteDatabaseId = dotenv.env['APPWRITE_DATABASE_ID']!;
 
 final String userCollectionId = dotenv.env['DATABASE_USER_COLLECTION_ID']!;
+
+// Function id's
+final String deleteUserFunctionId = dotenv.env['DELETE_USER_FUNCTION_ID']!;

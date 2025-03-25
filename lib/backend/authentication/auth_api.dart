@@ -70,5 +70,4 @@ class AuthApi {
       return null;
     }
   }
-
 }

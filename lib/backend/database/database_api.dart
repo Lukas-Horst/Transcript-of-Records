@@ -50,41 +50,6 @@ class DatabaseApi {
     }
   }
 
-  // Method to get a document by the attribute from a specific collection
-  Future<Document?> getDocumentByAttribute(String collectionId,
-      {List<String>? queries}) async {
-    try {
-      DocumentList? documents = await listDocuments(
-        collectionId,
-        queries: queries,
-      );
-      // If we get more than one document, the first one will be returned
-      if (documents!.total > 0) {
-        return documents.documents.first;
-      } else {
-        return null;
-      }
-    } catch(e) {
-      print(e);
-      return null;
-    }
-  }
-
-  // Method to list all documents from a collection
-  Future<DocumentList?> listDocuments(String collectionId,
-      {List<String>? queries}) async {
-    try {
-      return await _database.listDocuments(
-        databaseId: databaseId,
-        collectionId: collectionId,
-        queries: queries ?? [],
-      );
-    } catch(e) {
-      print(e);
-      return null;
-    }
-  }
-
   // Method to update a document with the given data
   Future<bool> updateDocument(String collectionId, String documentId,
       Map<String, dynamic> data) async {
@@ -112,6 +77,9 @@ class DatabaseApi {
       );
       return true;
     } catch(e) {
+      if (e.toString().contains('AppwriteException: document_not_found')) {
+        return true;
+      }
       print(e);
       return false;
     }
