@@ -50,7 +50,9 @@ class _ModuleTableState extends ConsumerState<ModuleTable> {
       double? grade = stringToDouble(moduleEntry[2]);
       double? cp = stringToDouble(moduleEntry[1]);
       if (grade != null && cp != null) {
-        totalCP += cp;
+        if (grade != 0) {
+          totalCP += cp;
+        }
         totalGrade += grade * cp;
       }
     }
@@ -72,7 +74,7 @@ class _ModuleTableState extends ConsumerState<ModuleTable> {
       key: key,
       moduleName: moduleEntry[0],
       credits: moduleEntry[1].replaceAll('.', ',').replaceAll(RegExp(r',0$'), ''),
-      grade: moduleEntry[2].replaceAll('.', ',').replaceAll(RegExp(r',0$'), ''),
+      grade: moduleEntry[2].replaceAll('.', ',').replaceAll(RegExp(r',0$'), '').replaceAll('0', '-'),
       onTap: () {
         setState(() {
           moduleList.remove(moduleEntry);

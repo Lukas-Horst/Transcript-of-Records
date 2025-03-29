@@ -1,6 +1,7 @@
 // author: Lukas Horst
 
 import 'package:flutter/material.dart';
+import 'package:flutter/rendering.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:transcript_of_records/backend/design/screen_size.dart';
 import 'package:transcript_of_records/backend/riverpod/provider.dart';
@@ -51,6 +52,8 @@ class ModuleTableCell extends ConsumerWidget {
                   ),
                 ),
                 child: Center(
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
                     child: Text(
                       moduleName,
                       style: TextStyle(
@@ -59,6 +62,7 @@ class ModuleTableCell extends ConsumerWidget {
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                  ),
                 ),
               ),
               Container(
@@ -73,12 +77,15 @@ class ModuleTableCell extends ConsumerWidget {
                   ),
                 ),
                 child: Center(
-                  child: Text(
-                    credits,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: ScreenSize.height * 0.03,
-                      fontWeight: FontWeight.bold,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Text(
+                      credits,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: ScreenSize.height * 0.03,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),
@@ -86,12 +93,15 @@ class ModuleTableCell extends ConsumerWidget {
               SizedBox(
                 width: ScreenSize.width * 0.19,
                 child: Center(
-                  child: Text(
-                    grade,
-                    style: TextStyle(
-                      color: Colors.white,
-                      fontSize: ScreenSize.height * 0.03,
-                      fontWeight: FontWeight.bold,
+                  child: SingleChildScrollView(
+                    scrollDirection: Axis.horizontal,
+                    child: Text(
+                      grade,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: ScreenSize.height * 0.03,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ),

@@ -7,6 +7,7 @@ import 'package:transcript_of_records/backend/helper/string_functions.dart';
 import 'package:transcript_of_records/frontend/widgets/bottom_sheets/custom_bottom_sheet.dart';
 import 'package:transcript_of_records/frontend/widgets/components/text/changeable_text.dart';
 import 'package:transcript_of_records/frontend/widgets/components/text/standard_text.dart';
+import 'package:transcript_of_records/frontend/widgets/components/useful_widgets/snackbar.dart';
 import 'package:transcript_of_records/frontend/widgets/components/useful_widgets/text_form_field.dart';
 
 CustomBottomSheet addModuleBottomSheet(BuildContext context, double totalCP,
@@ -184,8 +185,27 @@ CustomBottomSheet addModuleBottomSheet(BuildContext context, double totalCP,
               }
               List<String> moduleEntry = [moduleText, '$cp'.replaceAll('.', ',').replaceAll(',0', ''), gradeText];
               addTableCell(moduleEntry, true, ref);
+              Navigator.of(context).pop();
+              return;
             }
-            Navigator.of(context).pop();
+            if (moduleText.isEmpty) {
+              moduleTextFieldKey.currentState?.showError('');
+            } else {
+              print(true);
+              moduleTextFieldKey.currentState?.resetsErrors();
+            }
+            if (cp == 0) {
+              cpTextFieldKey.currentState?.changeText('0');
+              gradeTextFieldKey.currentState?.changeText('0');
+              cpTextFieldKey.currentState?.showError('');
+            } else {
+              cpTextFieldKey.currentState?.resetsErrors();
+            }
+            CustomSnackbar.showSnackbar(
+              'Der Modultext darf nicht leer sein und die CP\'s müssen größer als 0 sein.',
+              Colors.red,
+              const Duration(milliseconds: 3000),
+            );
           },
         ),
       ],

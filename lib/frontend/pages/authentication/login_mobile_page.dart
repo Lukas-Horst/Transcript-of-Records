@@ -28,6 +28,7 @@ class LoginMobile extends ConsumerWidget {
       child: Scaffold(
         backgroundColor: appTheme.primaryColor,
         appBar: AppBar(
+            centerTitle: true,
             title: const StandardText(text: 'Anmelden', color: Colors.black),
             backgroundColor: appTheme.secondaryColor
         ),
