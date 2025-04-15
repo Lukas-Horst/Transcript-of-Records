@@ -15,10 +15,14 @@ class LoginMobile extends ConsumerWidget {
   @override
   Widget build(BuildContext context, WidgetRef ref) {
 
-    LoadingSpin.closeLoadingSpin(context);
-    final appTheme = ref.watch(appThemeProvider);
+    final appTheme = ref.read(appThemeProvider);
     final authApi = ref.read(authApiProvider);
     final userStateNotifier = ref.read(userStateProvider.notifier);
+
+    // Closing the loading spin after the build
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      LoadingSpin.closeLoadingSpin(context);
+    });
 
     return PopScope(
       canPop: false,
